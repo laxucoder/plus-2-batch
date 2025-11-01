@@ -1,0 +1,1447 @@
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MG Clg Students Info...</title>
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: black;
+    background: linear-gradient(270deg, #6a11cb, #2575fc, #ff6a00, #ee0979);
+    background-size: 800% 800%;
+    animation: backgroundShift 15s ease infinite;
+  }
+
+  @keyframes backgroundShift {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 6px solid;
+    border-image: linear-gradient(45deg, #ff0080, #00ffe7, #ff8c00, #00ff73) 1;
+    animation: borderChange 5s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes borderChange {
+    0% {border-image: linear-gradient(45deg, #ff0080, #00ffe7) 1;}
+    50% {border-image: linear-gradient(45deg, #ff8c00, #00ff73) 1;}
+    100% {border-image: linear-gradient(45deg, #ff0080, #00ffe7) 1;}
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: blink 2s infinite ease-in-out, moveStar 10s linear infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% {opacity: 0.2;}
+    50% {opacity: 1;}
+  }
+
+  @keyframes moveStar {
+    from {transform: translateY(0);}
+    to {transform: translateY(100vh);}
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  }
+
+  input {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    outline: none;
+    width: 280px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.5);
+    color: black;
+  }
+
+  button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: white;
+    box-shadow: 0 0 15px #ff512f, 0 0 25px #dd2476;
+    transition: 0.3s;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #dd2476, 0 0 35px #ff512f;
+  }
+
+  .suggestions {
+    margin: 10px auto;
+    max-width: 300px;
+    text-align: left;
+    z-index: 3;
+  }
+
+  .suggestions div {
+    background: rgba(0,0,0,0.1);
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    font-weight: bold;
+    color: black;
+  }
+
+  .suggestions div:hover {
+    background: rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+
+  .card {
+    margin: 20px auto;
+    max-width: 400px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    text-align: left;
+  }
+
+  .card h2 {
+    margin: 0 0 15px;
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+    padding-bottom: 5px;
+  }
+
+  .card p {
+    margin: 8px 0;
+    font-size: 16px;
+  }
+  </style>
+</head>
+<body>
+  <script>
+  // Stars animation
+  for (let i = 0; i < 100; i++) {
+    let star = document.createElement("div");
+    star.className = "star";
+    star.style.top = Math.random() * window.innerHeight + "px";
+    star.style.left = Math.random() * window.innerWidth + "px";
+    star.style.animationDuration = (Math.random() * 2 + 1) + "s, " + (Math.random() * 10 + 5) + "s";
+    document.body.appendChild(star);
+  }
+</script>
+  <div class="container">
+   <h1>MG Students Info</h1>
+   <input type="text" id="nameInput" placeholder="Enter your name..." onkeyup="showSuggestions()">
+   <div class="suggestions" id="suggestions"></div> <button onclick="searchName()">Continue 🚀</button>
+   <div id="result"></div>
+  </div>
+  <script>
+  const students = [
+   
+   {
+      fullName: "Laxman Panigrahi",
+      class: "12th Science PCMB",
+      college: "Mahatma Gandhi Jr College, Wadsa",
+      section: "A",
+      gender: "Male",
+      rollNo: 12051,
+      category: "General",
+      DOB: "06-05-2008"
+    },
+
+  {
+    fullName: "Ayush Dhore",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12042,
+    category: "OBC",
+    DOB: "14-02-2007"
+  },
+  {
+    fullName: "Bhupesh Kuthe",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12043,
+    category: "OBC",
+    DOB: "13-11-2007"
+  },
+  {
+    fullName: "Chetan Nandeshwar",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12044,
+    category: "SC",
+    DOB: "18-07-2008"
+  },
+  {
+    fullName: "Dhawal Pilare",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12045,
+    category: "OBC",
+    DOB: "10-09-2008"
+  },
+  {
+    fullName: "Harshad Pote",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12046,
+    category: "OBC",
+    DOB: "31-07-2008"
+  },
+  {
+    fullName: "Himanshu Deshmukh",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12047,
+    category: "OBC",
+    DOB: "18-09-2008"
+  },
+  {
+    fullName: "Krish  Bulle",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12048,
+    category: "OBC",
+    DOB: "03-09-2008"
+  },
+  {
+    fullName: "Krishna Dhonge",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12049,
+    category: "OBC",
+    DOB: "23-08-2008"
+  },
+  {
+    fullName: "Kunal Maind",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12050,
+    category: "OBC",
+    DOB: "21-05-2008"
+  },
+ 
+  {
+    fullName: "Lokesh Kuthe",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12052,
+    category: "OBC",
+    DOB: "16-10-2008"
+  },
+  {
+    fullName: "Nihal Ghogare",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12053,
+    category: "OBC",
+    DOB: "25-07-2007"
+  },
+  {
+    fullName: "Om Behere",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12054,
+    category: "OBC",
+    DOB: "06-05-2008"
+  },
+  {
+    fullName: "Purab Bulle",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12055,
+    category: "OBC",
+    DOB: "23-11-2008"
+  },
+  {
+    fullName: "Ram Badwaik",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12056,
+    category: "OBC",
+    DOB: "13-04-2008"
+  },
+  {
+    fullName: "Sumit Bhajane",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12057,
+    category: "OBC",
+    DOB: "26-01-2008"
+  },
+  {
+    fullName: "Tejas Chaudhary",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12058,
+    category: "OBC",
+    DOB: "16-02-2009"
+  },
+  {
+    fullName: "Vedant Dibbe",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12059,
+    category: "OBC",
+    DOB: "13-03-2008"
+  },
+  {
+    fullName: "Yusuf Meshram",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Male",
+    rollNo: 12060,
+    category: "SC",
+    DOB: "04-10-2008"
+  },
+
+   
+   
+   
+   
+   
+   
+  {
+    fullName: "Achal Raut",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12001,
+    category: "SBC",
+    DOB: "30-06-2008"
+  },
+  {
+    fullName: "Ankita Urkude",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12002,
+    category: "OBC",
+    DOB: "02-03-2008"
+  },
+  {
+    fullName: "Anushka Ramteke",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12003,
+    category: "SC",
+    DOB: "14-09-2008"
+  },
+  {
+    fullName: "Arya Sahare",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12004,
+    category: "SC",
+    DOB: "18-01-2008"
+  },
+  {
+    fullName: "Arya Kuthe",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12005,
+    category: "OBC",
+    DOB: "10-09-2008"
+  },
+  {
+    fullName: "Bhavika Randive",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12006,
+    category: "OBC",
+    DOB: "09-09-2008"
+  },
+  {
+    fullName: "Chanchala Vishwas",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12007,
+    category: "General",
+    DOB: "12-04-2008"
+  },
+  {
+    fullName: "Chanchal Dhondane",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12008,
+    category: "SC",
+    DOB: "21-08-2008"
+  },
+  {
+    fullName: "Chandani Gedam",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12009,
+    category: "NT-B",
+    DOB: "24-11-2007"
+  },
+  {
+    fullName: "Chetna Mandharewar",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12010,
+    category: "NTB",
+    DOB: "17-09-2008"
+  },
+  {
+    fullName: "Darshana Parmal",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12011,
+    category: "General",
+    DOB: "31-03-2008"
+  },
+  {
+    fullName: "Dashmi Misar",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12012,
+    category: "OBC",
+    DOB: "09-10-2008"
+  },
+  {
+    fullName: "Gaytri Kumbhare",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12013,
+    category: "SBC",
+    DOB: "13-06-2009"
+  },
+  {
+    fullName: "Himani Raut",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12014,
+    category: "OBC",
+    DOB: "07-03-2009"
+  },
+  {
+    fullName: "Ishita Raut",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12015,
+    category: "OBC",
+    DOB: "24-09-2007"
+  },
+  {
+    fullName: "Komal Dhonge",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12016,
+    category: "OBC",
+    DOB: "23-09-2008"
+  },
+  {
+    fullName: "Manisha Sidhagodra",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12017,
+    category: "OBC",
+    DOB: "16-04-2008"
+  },
+  {
+    fullName: "Megha Patre",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12018,
+    category: "OBC",
+    DOB: "08-10-2007"
+  },
+  {
+    fullName: "Megha Bansod",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12019,
+    category: "OBC",
+    DOB: "15-04-2008"
+  },
+  {
+    fullName: "Mrunali Tutpat",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12020,
+    category: "OBC",
+    DOB: "24-05-2008"
+  },
+  {
+    fullName: "Muskan Goswami",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12021,
+    category: "NT-D",
+    DOB: "10-09-2007"
+  },
+  {
+    fullName: "Nihali Ghodeshwar",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12022,
+    category: "SC",
+    DOB: "28-08-2008"
+  },
+  {
+    fullName: "Riya Katre",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12023,
+    category: "OBC",
+    DOB: "23-12-2008"
+  },
+  {
+    fullName: "Rohini Sapate",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12024,
+    category: "OBC",
+    DOB: "04-09-2008"
+  },
+  {
+    fullName: "Salehin Sheikh",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12025,
+    category: "General",
+    DOB: "11-07-2008"
+  },
+  {
+    fullName: "Saloni Burade",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12026,
+    category: "OBC",
+    DOB: "18-09-2007"
+  },
+  {
+    fullName: "Saloni Devdhagale",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12027,
+    category: "OBC",
+    DOB: "16-09-2008"
+  },
+  {
+    fullName: "Saloni Khobragade",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12028,
+    category: "SC",
+    DOB: "19-01-2009"
+  },
+  {
+    fullName: "Saloni Bodele",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12029,
+    category: "SC",
+    DOB: "07-08-2008"
+  },
+  {
+    fullName: "Samidha Ramteke",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12030,
+    category: "SC",
+    DOB: "31-01-2009"
+  },
+  {
+    fullName: "Saniya Shamkule",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12031,
+    category: "SC",
+    DOB: "17-08-2008"
+  },
+  {
+    fullName: "Sanskruti Bhagadkar",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12032,
+    category: "OBC",
+    DOB: "25-10-2007"
+  },
+  {
+    fullName: "Shital Gedam",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12033,
+    category: "NT-B",
+    DOB: "27-11-2007"
+  },
+  {
+    fullName: "Smital Gajbhiye",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12034,
+    category: "SC",
+    DOB: "25-12-2008"
+  },
+  {
+    fullName: "Snehal Marbate",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12035,
+    category: "NT-B",
+    DOB: "15-09-2008"
+  },
+  {
+    fullName: "Trupti Barve",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12036,
+    category: "NT-B",
+    DOB: "16-12-2007"
+  },
+  {
+    fullName: "Tushari Yelane",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12037,
+    category: "OBC",
+    DOB: "30-10-2008"
+  },
+  {
+    fullName: "Vaishnavi Bansod",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12038,
+    category: "OBC",
+    DOB: "05-02-2009"
+  },
+  {
+    fullName: "Vaishnavi Kawale",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12039,
+    category: "OBC",
+    DOB: "26-09-2008"
+  },
+  {
+    fullName: "Vijaya Divathe",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12040,
+    category: "OBC",
+    DOB: "03-03-2008"
+  },
+  {
+    fullName: "Zarnigar Sheikh",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "A",
+    gender: "Female",
+    rollNo: 12041,
+    category: "General",
+    DOB: "16-08-2008"
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+   
+, {
+    fullName: "ADITYA MESHRAM",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12099,
+    category: "NT B",
+    DOB: "03-05-2008"
+  },
+  {
+    fullName: "ALFIYA SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12061,
+    category: "General",
+    DOB: "09-09-2008"
+  },
+  {
+    fullName: "ANJALI DONADKAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12062,
+    category: "OBC",
+    DOB: "04-10-2008"
+  },
+  {
+    fullName: "ANSHUL PARSHURAMKAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12100,
+    category: "OBC",
+    DOB: "06-08-2008"
+  },
+  {
+    fullName: "ASHKA SACHDEV",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12063,
+    category: "General",
+    DOB: "11-03-2008"
+  },
+  {
+    fullName: "ATHARV TIKALE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12101,
+    category: "OBC",
+    DOB: "16-09-2008"
+  },
+  {
+    fullName: "AVANTI NAKTODE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12064,
+    category: "OBC",
+    DOB: "15-02-2009"
+  },
+  {
+    fullName: "BHAGYASHRI VAIDYA",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12065,
+    category: "SC",
+    DOB: "21-12-2007"
+  },
+  {
+    fullName: "BHUMESHWARI DONADKAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12066,
+    category: "OBC",
+    DOB: "30-03-2008"
+  },
+  {
+    fullName: "BHUSHAN MAIND",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12102,
+    category: "OBC",
+    DOB: "02-08-2009"
+  },
+  {
+    fullName: "DAKSH PENDARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12103,
+    category: "ST",
+    DOB: "09-10-2008"
+  },
+  {
+    fullName: "DEWANG ZILPE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12104,
+    category: "OBC",
+    DOB: "19-08-2008"
+  },
+  {
+    fullName: "DHANASHRI BHUTE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12067,
+    category: "OBC",
+    DOB: "07-10-2008"
+  },
+  {
+    fullName: "DISHA RASPAYLE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12068,
+    category: "General",
+    DOB: "29-05-2008"
+  },
+  {
+    fullName: "GAJAL UIKEY",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12069,
+    category: "ST",
+    DOB: "22-09-2007"
+  },
+  {
+    fullName: "GAURAO NEWARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12105,
+    category: "SBC",
+    DOB: "28-05-2008"
+  },
+  {
+    fullName: "GAURAV KUKREJA",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12106,
+    category: "General",
+    DOB: "05-09-2008"
+  },
+  {
+    fullName: "GUNAL KUTHE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12070,
+    category: "OBC",
+    DOB: "04-12-2008"
+  },
+  {
+    fullName: "GURPREET SINGH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12107,
+    category: "General",
+    DOB: "20-03-2007"
+  },
+  {
+    fullName: "KASTURI MORE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12071,
+    category: "General",
+    DOB: "15-06-2007"
+  },
+  {
+    fullName: "KAUNAIN SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12072,
+    category: "General",
+    DOB: "19-04-2009"
+  },
+  {
+    fullName: "KHUSHI KUKREJA",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12073,
+    category: "General",
+    DOB: "01-04-2008"
+  },
+  {
+    fullName: "KOMAL RAUT",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12074,
+    category: "OBC",
+    DOB: "17-11-2008"
+  },
+  {
+    fullName: "LALESH MESHRAM",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12108,
+    category: "SC",
+    DOB: "01-06-2008"
+  },
+  {
+    fullName: "LAXMI GRADE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12075,
+    category: "SC",
+    DOB: "19-11-2008"
+  },
+  {
+    fullName: "LUCKY THAKARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12109,
+    category: "NT B",
+    DOB: "25-07-2008"
+  },
+  {
+    fullName: "MOSAMI MOTGHARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12076,
+    category: "OBC",
+    DOB: "07-07-2008"
+  },
+  {
+    fullName: "NAITIK SURYAVANSHI",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12110,
+    category: "OBC",
+    DOB: "05-03-2009"
+  },
+  {
+    fullName: "NAMRATA SAHARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12077,
+    category: "SC",
+    DOB: "31-01-2008"
+  },
+  {
+    fullName: "PIYUSH BAGMARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12111,
+    category: "OBC",
+    DOB: "23-08-2008"
+  },
+  {
+    fullName: "PIYUSHKA MULE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12078,
+    category: "OBC",
+    DOB: "08-03-2008"
+  },
+  {
+    fullName: "PRANAV PARATE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12112,
+    category: "General",
+    DOB: "30-01-2009"
+  },
+  {
+    fullName: "PRANJAL PURI",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12079,
+    category: "NT B",
+    DOB: "22-11-2008"
+  },
+  {
+    fullName: "PRASHIK BAMBOLE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12113,
+    category: "SC",
+    DOB: "11-10-2008"
+  },
+  {
+    fullName: "PRATIKSHA KOLHE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12080,
+    category: "General",
+    DOB: "24-08-2008"
+  },
+  {
+    fullName: "SAHIL SAHARE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12114,
+    category: "SC",
+    DOB: "22-03-2008"
+  },
+  {
+    fullName: "SAMIKSHA PRADHAN",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12081,
+    category: "OBC",
+    DOB: "24-05-2008"
+  },
+  {
+    fullName: "SANSKAR BEDRE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12115,
+    category: "OBC",
+    DOB: "06-03-2009"
+  },
+  {
+    fullName: "SANIYA SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12082,
+    category: "General",
+    DOB: "17-07-2008"
+  },
+  {
+    fullName: "SAYALI BAWANE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12083,
+    category: "NT B",
+    DOB: "07-08-2008"
+  },
+  {
+    fullName: "SHANTANU DHAWALE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12116,
+    category: "SC",
+    DOB: "19-03-2009"
+  },
+  {
+    fullName: "SHIBANAZ SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12084,
+    category: "General",
+    DOB: "28-09-2008"
+  },
+  {
+    fullName: "SHIVANI MESHRAM",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12085,
+    category: "General",
+    DOB: "17-08-2008"
+  },
+  {
+    fullName: "SHIZA SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12086,
+    category: "General",
+    DOB: "04-11-2008"
+  },
+  {
+    fullName: "SHRADHDA DONADKAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12087,
+    category: "OBC",
+    DOB: "19-10-2007"
+  },
+  {
+    fullName: "SHRANIYA RAMTEKE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12088,
+    category: "SC",
+    DOB: "17-12-2008"
+  },
+  {
+    fullName: "SHREYA NAGDEVE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12089,
+    category: "General",
+    DOB: "01-12-2008"
+  },
+  {
+    fullName: "SHRUTI KHOBRAGADE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12090,
+    category: "SC",
+    DOB: "26-03-2009"
+  },
+  {
+    fullName: "SHRUTI DHAWALE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12091,
+    category: "SC",
+    DOB: "20-09-2008"
+  },
+  {
+    fullName: "SUMIT NAGDEVE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12117,
+    category: "General",
+    DOB: "09-08-2008"
+  },
+  {
+    fullName: "SWETA THENGARI",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12092,
+    category: "OBC",
+    DOB: "05-10-2007"
+  },
+  {
+    fullName: "TANASHRI SAMARTH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12093,
+    category: "OBC",
+    DOB: "26-11-2008"
+  },
+  {
+    fullName: "TANMAY ZARKAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Male",
+    rollNo: 12118,
+    category: "OBC",
+    DOB: "13-07-2008"
+  },
+  {
+    fullName: "TANAVI PRADHAN",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12095,
+    category: "OBC",
+    DOB: "26-09-2008"
+  },
+  {
+    fullName: "TANUSHREE PAWAR",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12094,
+    category: "VJA",
+    DOB: "22-04-2008"
+  },
+  {
+    fullName: "TAZEEN MIRZA",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12096,
+    category: "General",
+    DOB: "14-01-2007"
+  },
+  {
+    fullName: "YUGALI TIKALE",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12097,
+    category: "OBC",
+    DOB: "22-07-2008"
+  },
+  {
+    fullName: "ZARA SHEIKH",
+    class: "12th Science PCMB",
+    college: "Mahatma Gandhi Jr College, Wadsa",
+    section: "B",
+    gender: "Female",
+    rollNo: 12098,
+    category: "General",
+    DOB: "17-03-2008"
+  }
+ 
+ 
+ 
+ 
+ 
+];
+ 
+ 
+
+  function showSuggestions() {
+    const input = document.getElementById("nameInput").value.toLowerCase();
+    const suggestions = document.getElementById("suggestions");
+    const result = document.getElementById("result");
+    suggestions.innerHTML = "";
+    result.innerHTML = "";
+
+    if (input.length > 0) {
+      const matches = students.filter(s => s.fullName.toLowerCase().startsWith(input));
+      matches.forEach(m => {
+        const div = document.createElement("div");
+        div.textContent = m.fullName;
+        div.onclick = () => showCard(m);
+        suggestions.appendChild(div);
+      });
+    }
+  }
+
+  function showCard(student) {
+    const result = document.getElementById("result");
+    const suggestions = document.getElementById("suggestions");
+    suggestions.innerHTML = ""; // 👉 Suggestions clear karne ki line
+
+    result.innerHTML = `
+      <div class="card">
+        <h2>🎓 ${student.fullName}</h2>
+        <p><b>Class:</b> ${student.class}</p>
+        <p><b>College:</b> ${student.college}</p>
+        <p><b>Section:</b> ${student.section}</p>
+        <p><b>Gender:</b> ${student.gender === "Male" ? "👨 Male" : "👩 Female"}</p>
+        <p><b>Roll No:</b> ${student.rollNo}</p>
+        <p><b>Category:</b> ${student.category}</p>
+        <p><b>Date of Birth:</b> ${student.DOB ? student.DOB : "N/A"}</p>
+      </div>
+    `;
+  }
+
+  function searchName() {
+    const input = document.getElementById("nameInput").value;
+    const found = students.find(s => s.fullName.toLowerCase() === input.toLowerCase());
+    if (found) {
+      showCard(found);
+    }
+  }
+</script>
+</body>
+</html>
